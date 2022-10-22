@@ -1,5 +1,6 @@
 let initialNumber = 0;
 let cardsFlipped = 0;
+let rounds = 0;
 let cardsSelected = [];
 let timerElement = 0;
 let interval;
@@ -116,9 +117,12 @@ const handleClick = ({ target }) => {
   if (selfBack) return;
   if (selfFront) return;
   if (isTheCard) return;
+  if (rounds >= 2) return;
 
   target.parentElement.classList.add('clicked'); // adds on 'card'
   cardsFlipped += 1;
+  rounds += 1;
+  console.log(rounds);
   cardsSelected.push(target.previousElementSibling); // adds 'back' in cardsSelected
 
   if (cardsSelected.length === 2) {
@@ -128,7 +132,7 @@ const handleClick = ({ target }) => {
 
     if (!correct) {
       setTimeout(() => {
-        console.log('incorrect', cardsSelected[0].parentElement, cardsSelected[1].parentElement)
+        // console.log('incorrect', cardsSelected[0].parentElement, cardsSelected[1].parentElement)
         cardsSelected.map((card) => {
           card?.parentElement.classList.remove('clicked')
         });
@@ -136,6 +140,7 @@ const handleClick = ({ target }) => {
     }
     setTimeout(() => {
       cardsSelected = [];
+      rounds = 0;
     }, 1000);
   }
 
