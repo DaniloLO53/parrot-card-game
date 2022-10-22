@@ -101,15 +101,26 @@ const gameOver = () => {
 };
 
 const handleClick = ({ target }) => {
-  if (target.getAttribute('id') === cardsSelected[0]?.getAttribute('id') || target.className === 'card clicked') {
+  // selfBack: it verify if the back of the card clicked is the one that it's in
+  // cardsSelected already.
+  const selfBack = target.getAttribute('id') === cardsSelected[0]?.getAttribute('id');
+  // isTheCard: verify if the target clicked is the card container (with class 'card')
+  const isTheCard = target.className === 'card clicked';
+
+  if (selfBack || isTheCard) {
+    // eventually, if any card is clicked a lot of times in a short time period, 
+    // the target may not be the one we expected. This block prevents bugs from
+    // that condition.
     return;
   }
 
-  target.parentElement.classList.add('clicked');
+  target.parentElement.classList.add('clicked'); // adds on 'card'
   cardsFlipped += 1;
-  cardsSelected.push(target.previousElementSibling);
+  cardsSelected.push(target.previousElementSibling); // adds 'back' in cardsSelected
 
   if (cardsSelected.length === 2) {
+    // verify if the two elements in array have the same background (which has the name
+    // of its class).
     const correct = cardsSelected[0].className === cardsSelected[1].className;
 
     if (!correct) {
