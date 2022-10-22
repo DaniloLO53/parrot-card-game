@@ -103,16 +103,19 @@ const gameOver = () => {
 const handleClick = ({ target }) => {
   // selfBack: it verify if the back of the card clicked is the one that it's in
   // cardsSelected already.
-  const selfBack = target.getAttribute('id') === cardsSelected[0]?.getAttribute('id');
-  // isTheCard: verify if the target clicked is the card container (with class 'card')
-  const isTheCard = target.className === 'card clicked';
+  // selfFront: idem, but with front
+  const selfBack = target.id === cardsSelected[0]?.id;
+  const selfFront = target.previousElementSibling?.id === cardsSelected[0]?.id;
 
-  if (selfBack || isTheCard) {
-    // eventually, if any card is clicked a lot of times in a short time period, 
-    // the target may not be the one we expected. This block prevents bugs from
-    // that condition.
-    return;
-  }
+  // isTheCard: verify if the target clicked is the card container (with class 'card')
+  const isTheCard = target.className.includes('card');
+
+  // eventually, if any card is clicked a lot of times in a short period of time, 
+  // the target may not be the one we expected. Theses blocks prevent bugs from
+  // that condition.
+  if (selfBack) return;
+  if (selfFront) return;
+  if (isTheCard) return;
 
   target.parentElement.classList.add('clicked'); // adds on 'card'
   cardsFlipped += 1;
@@ -125,8 +128,10 @@ const handleClick = ({ target }) => {
 
     if (!correct) {
       setTimeout(() => {
-        cardsSelected.map((card) => card.parentElement.classList.remove('clicked'));
-        cardsSelected = [];
+        console.log('incorrect', cardsSelected[0].parentElement, cardsSelected[1].parentElement)
+        cardsSelected.map((card) => {
+          card?.parentElement.classList.remove('clicked')
+        });
       }, 1000);
     }
     setTimeout(() => {

@@ -31,7 +31,6 @@ body {
   min-height: calc(100vh - 180px);
   width: calc(100vw - 90px);
   display: flex;
-  /* align-items: center; */
   justify-content: center;
   flex-wrap: wrap;
 }
