@@ -98,7 +98,9 @@ const gameOver = () => {
     cardsFlipped = 0;
     timerElement = 0;
     timer();
-  }
+  } else if (restart === 'não') {
+    clearInterval(interval);
+  } else gameOver();
 };
 
 const handleClick = ({ target }) => {
