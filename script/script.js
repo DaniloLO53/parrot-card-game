@@ -2,6 +2,7 @@ let initialNumber = 0;
 let cardsFlipped = 0;
 let rounds = 0;
 let cardsSelected = [];
+let correctCards = [];
 let timerElement = 0;
 let interval;
 const cardsContainer = document.querySelector('.cardsContainer');
@@ -120,12 +121,19 @@ const handleClick = ({ target }) => {
   if (selfFront) return;
   if (isTheCard) return;
   if (rounds >= 2) return;
+  console.log(correctCards, target, target.previousElementSibling);
+  if (correctCards.includes(target.className)) {
+    console.log(correctCards);
+    return;
+  }
 
   target.parentElement.classList.add('clicked'); // adds on 'card'
   cardsFlipped += 1;
-  rounds += 1;
   console.log(rounds);
   cardsSelected.push(target.previousElementSibling); // adds 'back' in cardsSelected
+  if (!correctCards.includes(target.previousElementSibling)) {
+    rounds += 1;
+  }
 
   if (cardsSelected.length === 2) {
     // verify if the two elements in array have the same background (which has the name
@@ -139,6 +147,9 @@ const handleClick = ({ target }) => {
           card?.parentElement.classList.remove('clicked')
         });
       }, 1000);
+    } else {
+      correctCards.push(cardsSelected[0].className);
+      console.log(correctCards);
     }
     setTimeout(() => {
       cardsSelected = [];
